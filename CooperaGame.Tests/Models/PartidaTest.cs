@@ -12,7 +12,7 @@ namespace CooperaGame.Tests.Models
     {
 
         [Fact]
-        public void testPruebaPartida()
+        public void TestPruebaPartida()
         {
             // Arrange
             Partida partida = new Partida();
