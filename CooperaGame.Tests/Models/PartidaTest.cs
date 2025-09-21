@@ -21,7 +21,7 @@ namespace CooperaGame.Tests.Models
             string resultado = partida.PruebaParaTest();
 
             //Assert
-            Assert.Equal("Holita", resultado);
+            Assert.Equal("Holitas", resultado);
 
         }
     }
