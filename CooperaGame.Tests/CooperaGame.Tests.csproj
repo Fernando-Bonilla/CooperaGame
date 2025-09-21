@@ -22,4 +22,9 @@
     <ProjectReference Include="..\CooperaGame\CooperaGame.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
