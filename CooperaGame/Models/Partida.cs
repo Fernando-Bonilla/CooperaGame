@@ -13,6 +13,11 @@
         {
             return "Holitas";
         }
+
+        public int GenerarNumAleatorio()
+        {
+            return 1;
+        }
         #endregion Metodos
 
     }

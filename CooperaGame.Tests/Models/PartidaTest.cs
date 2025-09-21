@@ -24,5 +24,19 @@ namespace CooperaGame.Tests.Models
             Assert.Equal("Holitas", resultado);
 
         }
+
+        [Fact]
+        public void PruebaGeneradorNumAleatorio()
+        {
+            // Arrange
+            Partida partida= new Partida();
+
+            int result = partida.GenerarNumAleatorio();
+
+            // Assert
+            Assert.Equal(1, result);
+        }
+
+
     }
 }
