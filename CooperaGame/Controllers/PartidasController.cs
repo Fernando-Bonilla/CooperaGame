@@ -20,9 +20,9 @@ namespace CooperaGame.Controllers
         }
 
         // GET: Partidas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Partida partida)
         {
-            return View(await _context.Partidas.ToListAsync());
+            return View(partida);
         }
 
         // GET: Partidas/Details/5
@@ -64,10 +64,10 @@ namespace CooperaGame.Controllers
                 _context.Add(partida);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", partida);
             }
 
-            return RedirectToAction(nameof(Index)); ;
+            return RedirectToAction("Index", partida);
         }
 
         // GET: Partidas/Edit/5
