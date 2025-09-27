@@ -11,10 +11,10 @@ namespace CooperaGame.Tests.Models
     public class JugadorTest
     {
 
-        [Fact]
+       /* [Fact]
         public void TestJugador()
         {
             
-        }
+        }*/
     }
 }

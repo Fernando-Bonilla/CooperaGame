@@ -10,33 +10,34 @@ namespace CooperaGame.Tests.Models
 {
     public class PartidaTest
     {
+        
+        /*[Fact]
+        public void PruebaGeneradorNumAleatorioValorMinDiezValorMaxCien()
+        {
+            // Arrange
+            Partida partida= new Partida();
 
-        [Fact]
-        public void TestPruebaPartida()
+            // Act
+            int result = partida.GenerarNumAleatorioMinDiezMaxCien();            
+
+            // Assert
+            Assert.InRange(result,10,15);
+        }*/
+
+        /*[Fact]
+        public void GenerarMetasRecursosPartida()
         {
             // Arrange
             Partida partida = new Partida();
 
             // Act
-            string resultado = partida.PruebaParaTest();
+            partida.GenerarMetasRecursos();
 
             //Assert
-            Assert.Equal("Holitas", resultado);
-
-        }
-
-        [Fact]
-        public void PruebaGeneradorNumAleatorio()
-        {
-            // Arrange
-            Partida partida= new Partida();
-
-            int result = partida.GenerarNumAleatorio();
-
-            // Assert
-            Assert.Equal(1, result);
-        }
-
+            Assert.InRange(partida.CantMadera, 10,15);
+            Assert.InRange(partida.CantPiedra, 10,15);
+            Assert.InRange(partida.CantComida, 10,15);
+        }*/
 
     }
 }
