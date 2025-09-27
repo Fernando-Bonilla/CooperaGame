@@ -10,22 +10,40 @@ namespace CooperaGame.Tests.Models
 {
     public class PartidaTest
     {
-        
-        /*[Fact]
+
+        [Fact]
         public void PruebaGeneradorNumAleatorioValorMinDiezValorMaxCien()
         {
             // Arrange
-            Partida partida= new Partida();
+            Partida partida1 = new Partida(10);
+            Partida partida2 = new Partida(10);
 
             // Act
-            int result = partida.GenerarNumAleatorioMinDiezMaxCien();            
+            partida1.GenerarMetasRecursos();
+            partida2.GenerarMetasRecursos();
 
             // Assert
-            Assert.InRange(result,10,15);
-        }*/
+            Assert.InRange(partida1.CantMadera, 10, 15);
+            Assert.InRange(partida2.CantMadera, 10, 15);
+        }
 
-        /*[Fact]
-        public void GenerarMetasRecursosPartida()
+        [Fact]
+        public void PruebaGeneradorNumAleatorioValorIgualUsandoMismoSeed()
+        {
+            // Arrange
+            Partida partida1 = new Partida(10);
+            Partida partida2 = new Partida(10);
+
+            // Act
+            partida1.GenerarMetasRecursos();
+            partida2.GenerarMetasRecursos();
+
+            // Assert
+            Assert.Equal(partida1.CantMadera, partida2.CantMadera);            
+        }
+
+        [Fact]
+        public void GenerarMetasRecursosPartidaEntreValorMinimoYValorMaximo()
         {
             // Arrange
             Partida partida = new Partida();
@@ -34,10 +52,10 @@ namespace CooperaGame.Tests.Models
             partida.GenerarMetasRecursos();
 
             //Assert
-            Assert.InRange(partida.CantMadera, 10,15);
-            Assert.InRange(partida.CantPiedra, 10,15);
-            Assert.InRange(partida.CantComida, 10,15);
-        }*/
+            Assert.InRange(partida.CantMadera, 10, 15);
+            Assert.InRange(partida.CantPiedra, 10, 15);
+            Assert.InRange(partida.CantComida, 10, 15);
+        }
 
     }
 }
