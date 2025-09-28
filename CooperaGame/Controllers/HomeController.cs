@@ -22,7 +22,7 @@ namespace CooperaGame.Controllers
 
             if (ultimaPartida != null)
             {
-                return RedirectToAction("Index", "Partidas");
+                return RedirectToAction("Index", "Partidas", new { id = ultimaPartida.Id});
             }
 
             return View();
