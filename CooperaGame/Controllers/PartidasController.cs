@@ -55,7 +55,7 @@ namespace CooperaGame.Controllers
           
         }*/
 
-        public async Task<int> CrearPartidaAsync()
+        public async Task<int> CrearPartida()
         {
             Partida partida = new Partida();
             partida.GenerarMetasRecursos();
@@ -116,7 +116,7 @@ namespace CooperaGame.Controllers
             // Chequeo si esa partida esta en estado jugando
             if(!await PartidaEnCurso(idPartida)) // Si no tiene estado jugando creo una nueva partida
             {
-                int idNuevaPartida = await CrearPartidaAsync();
+                int idNuevaPartida = await CrearPartida();
                 return RedirectToAction("Index", new { id = idNuevaPartida });
             }
             else // Si tiene estado jugando reedirijo a index con esa partida id
