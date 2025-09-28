@@ -20,34 +20,25 @@ namespace CooperaGame.Controllers
         }
 
         // GET: Partidas
-        public async Task<IActionResult> Index(Partida partida)
+        public async Task<IActionResult> Index(int id)
         {
-            return View(partida);
-        }
-
-        // GET: Partidas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            if (id <= 0)
             {
+                Console.WriteLine($"========== No entra partida null {id}");
                 return NotFound();
             }
 
-            var partida = await _context.Partidas
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (partida == null)
+            Partida? partida = await _context.Partidas
+                .FindAsync(id);
+
+            if (partida == null) 
             {
+                
                 return NotFound();
             }
 
             return View(partida);
         }
-
-        // GET: Partidas/Create
-        /*public IActionResult Crear()
-        {
-            return View();
-        }*/
 
         // POST: Partidas/Crear
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -64,95 +55,11 @@ namespace CooperaGame.Controllers
                 _context.Add(partida);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", partida);
+                return RedirectToAction("Index", new {id = partida.Id });
             }
-
-            return RedirectToAction("Index", partida);
-        }
-
-        // GET: Partidas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var partida = await _context.Partidas.FindAsync(id);
-            if (partida == null)
-            {
-                return NotFound();
-            }
-            return View(partida);
-        }
-
-        // POST: Partidas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Estado,CantMadera,CantPiedra,CantComida,Semilla")] Partida partida)
-        {
-            if (id != partida.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(partida);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PartidaExists(partida.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(partida);
-        }
-
-        // GET: Partidas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var partida = await _context.Partidas
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (partida == null)
-            {
-                return NotFound();
-            }
-
-            return View(partida);
-        }
-
-        // POST: Partidas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var partida = await _context.Partidas.FindAsync(id);
-            if (partida != null)
-            {
-                _context.Partidas.Remove(partida);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+                        
+            return RedirectToAction("Index", new { id = partida.Id });
+        }       
 
         private bool PartidaExists(int id)
         {

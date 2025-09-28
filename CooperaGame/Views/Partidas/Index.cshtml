@@ -1,64 +1,5 @@
 ﻿@model CooperaGame.Models.Partida
 
-@* @{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CantMadera)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CantPiedra)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CantComida)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Semilla)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantMadera)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantPiedra)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantComida)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Semilla)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -217,25 +158,33 @@
                     <h5 class="modal-title text-white" id="changeNameModalLabel">Cambiar nombre</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                 <div class="modal-body">
-                    <form id="changeNameForm">
+                    <form id="changeNameForm"
+                        method="post"
+                        asp-controller="Jugadores"
+                        asp-action="Crear"
+                        asp-route-idPartida="@Model.Id">
+                        @Html.AntiForgeryToken()
                         <div class="mb-3">
                             <label for="newPlayerName" class="form-label text-white">Ingresa tu nombre:</label>
                             <input type="text"
                                    class="form-control"
                                    id="newPlayerName"
-                                   placeholder="Ej: MatiasV"
+                                   placeholder=" "
                                    maxlength="20"
                                    required
-                                   style="background: #1b2742; border: 1px solid #3d4956; color: #ffffff;">
+                                   style="background: #1b2742; border: 1px solid #3d4956; color: #ffffff;"
+                                   name="Nombre">
                             <div class="form-text text-muted">Máximo 20 caracteres</div>
+                        </div>
+                        <div class="modal-footer border-top border-secondary-subtle">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" id="acceptNameChange">Aceptar</button>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer border-top border-secondary-subtle">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="acceptNameChange">Aceptar</button>
-                </div>
+                
             </div>
         </div>
     </div>
