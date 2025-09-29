@@ -69,6 +69,7 @@ namespace CooperaGame.Controllers
 
             if (ModelState.IsValid)
             {
+                partida.Estado = "activa";
                 _context.Add(partida);
                 await _context.SaveChangesAsync();
 
