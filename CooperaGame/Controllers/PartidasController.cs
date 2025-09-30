@@ -52,7 +52,6 @@ namespace CooperaGame.Controllers
             ViewBag.CantMadera = cantidadMadera;
             ViewBag.CantComida = cantidadComida;
 
-
             return View(partida);
         }
 
