@@ -18,6 +18,13 @@ namespace CooperaGame.Controllers
 
         public IActionResult Index()
         {
+            Partida? ultimaPartida = _context.Partidas.FirstOrDefault(p => p.Estado == "Activa");
+
+            if (ultimaPartida != null)
+            {
+                return RedirectToAction("Index", "Partidas", new { id = ultimaPartida.Id});
+            }
+
             return View();
         }
         

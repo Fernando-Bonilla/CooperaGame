@@ -36,6 +36,23 @@ namespace CooperaGame.Controllers
                 return NotFound();
             }
 
+            int cantidadPiedra = _context.Recolecciones
+                                    .Where(r => (r.PartidaId == id) && (r.Recurso == "stone"))
+                                    .Count();
+
+            int cantidadMadera = _context.Recolecciones
+                                    .Where(r => (r.PartidaId == id) && (r.Recurso == "wood"))
+                                    .Count();
+
+            int cantidadComida = _context.Recolecciones
+                                    .Where(r => (r.PartidaId == id) && (r.Recurso == "food"))
+                                    .Count();
+
+            ViewBag.CantPiedra = cantidadPiedra;
+            ViewBag.CantMadera = cantidadMadera;
+            ViewBag.CantComida = cantidadComida;
+
+
             return View(partida);
         }
 
@@ -62,6 +79,7 @@ namespace CooperaGame.Controllers
 
             try
             {
+                partida.Estado = "activa";
                 _context.Add(partida);
                 await _context.SaveChangesAsync();
             }
