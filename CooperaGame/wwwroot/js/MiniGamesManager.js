@@ -1,31 +1,30 @@
-﻿function setBotonAgregarMadera() {
+﻿// Funciones de configuración (No reciben evento)
+const setBotonAgregarMadera = () => {
     let boton = document.getElementById("btnWood");
-    boton.addEventListener("click", () => DesplegarMinijuego("wood"));
-}
+    // Al hacer click, pasamos el objeto evento (e) y el recurso.
+    boton.addEventListener("click", (e) => DesplegarMinijuego(e, "wood"));
+};
 
-function setBotonAgregarPiedra() {
+const setBotonAgregarPiedra = () => {
     let boton = document.getElementById("btnStone");
-    boton.addEventListener("click", () => DesplegarMinijuego("stone"));
-}
+    // Al hacer click, pasamos el objeto evento (e) y el recurso.
+    boton.addEventListener("click", (e) => DesplegarMinijuego(e, "stone"));
+};
 
-function setBotonAgregarComida() {
+const setBotonAgregarComida = () => {
     let boton = document.getElementById("btnFood");
-    boton.addEventListener("click", () => DesplegarMinijuego("food"));
-}
+    // Corregido: La función anónima DEBE capturar el evento (e) y pasarlo.
+    boton.addEventListener("click", (e) => DesplegarMinijuego(e, "food"));
+};
 
-function DesplegarMinijuego(recurso) {
-    //document.preventDefault();
-    const containerMinijuego = document.getElementById("modalContainter");
+// Función principal de lógica (Recibe el evento y el recurso)
+const DesplegarMinijuego = (e, recurso) => {
+    // 1. Esto ahora funciona correctamente porque 'e' es el objeto Event del click.
+    e.preventDefault();
+
+    // ... Tu lógica de juego/fetch ...
     const partidaId = document.getElementById("partidaId").innerHTML;
     console.log(partidaId);
-
-    //const url = '/MiniGames/MiniGame_ClickIt';
-    /*const datosParaEnviar = {
-        // Asegúrate de que los nombres de las propiedades coincidan (Id, Nombre)
-        PartidaId: partidaId,
-        Recurso: recurso,
-        JugadorId: parseInt(2),
-    };*/
 
     const payload = {
         partidaId: parseInt(partidaId, 10),
@@ -33,26 +32,23 @@ function DesplegarMinijuego(recurso) {
         nombreJugador: getUsuario()
     };
 
-    //const url = `/Recoleccions/Crear?recurso=${encodeURIComponent(recurso) }&jugadorId=2&partidaId=25`;
-    
     fetch('/Recoleccions/Crear', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
     })
-    .then(r => r.json())
-    .then(data => window.location.href = data.redirectUrl);
-        
-    
-    
-}
+        .then(r => r.json())
+        .then(data => window.location.href = data.redirectUrl);
+};
 
+// Función de inicialización
 function setUp() {
     setBotonAgregarMadera();
     setBotonAgregarPiedra();
     setBotonAgregarComida();
 }
 
-document.addEventListener("DOMContentLoaded", setUp());
+// Inicializa el setup cuando el DOM esté cargado
+document.addEventListener("DOMContentLoaded", () => setUp());

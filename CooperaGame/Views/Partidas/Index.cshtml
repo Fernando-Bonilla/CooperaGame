@@ -209,37 +209,48 @@
 
     <!-- JavaScript personalizado -->
     <script>
-        const btnwood = document.getElementById('btnWood');
-        const btnstone = document.getElementById('btnStone');
-        const btnfood = document.getElementById('btnFood');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Referencias a elementos
 
-        document.addEventListener('DOMContentLoaded', function() {
+          const btnwood = document.getElementById('btnWood');
+          const btnstone = document.getElementById('btnStone');
+          const btnfood = document.getElementById('btnFood');
+
+          const changeNameBtn = document.getElementById('changeNameBtn');
+          const changeNameModal = new bootstrap.Modal(document.getElementById('changeNameModal'));
+          const newPlayerNameInput = document.getElementById('newPlayerName');
+          const acceptNameChangeBtn = document.getElementById('acceptNameChange');
+          const playerNameDisplay = document.getElementById('playerNameDisplay'); 
+          let user = localStorage.getItem("user");
+		  playerNameDisplay.innerHTML = user;
+            
             // Chequeamos estado de Usuario
 
-            if (getUsuario() == null){
+            if (localStorage.getItem("user") !== null)
+            {
                 btnwood.classList.remove('d-none');
                 btnstone.classList.remove('d-none');
                 btnfood.classList.remove('d-none');
-
-                onClickChangeName();
             }
             else{
                 btnfood.classList.add('d-none');
                 btnwood.classList.add('d-none');
 				btnstone.classList.add('d-none');
+                onClickChangeName();
+
             }
 
-          // Referencias a elementos
-          const changeNameBtn = document.getElementById('changeNameBtn');
-          const changeNameModal = new bootstrap.Modal(document.getElementById('changeNameModal'));
-          const newPlayerNameInput = document.getElementById('newPlayerName');
-          const acceptNameChangeBtn = document.getElementById('acceptNameChange');
-          const playerNameDisplay = document.getElementById('playerNameDisplay');
+          
 
           // Abrir modal al hacer clic en "Cambiar nombre"
-          changeNameBtn.addEventListener('click', onClickChangeName());
+          changeNameBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              onClickChangeName()});
 
           function onClickChangeName() {
+
             // Limpiar campo de entrada
             newPlayerNameInput.value = '';
             // Mostrar el modal
@@ -277,6 +288,8 @@
             playerNameDisplay.innerHTML = `Jugador: <em>${newName}</em>`;
                                         ////////////////////////////////////////
             guardarUsuario(newName);   //guardamos el Nombre en el localStrage
+
+             
 
             // Limpiar estado de error
             newPlayerNameInput.classList.remove('is-invalid');
