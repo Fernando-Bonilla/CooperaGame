@@ -63,8 +63,13 @@ namespace CooperaGame.Controllers
         /*[ValidateAntiForgeryToken]*/
         public async Task<IActionResult> Crear([FromBody] RecoleccionDTO recoleccionDTO) //Fecha [Bind("Recurso,JugadorId,PartidaId")] Recoleccion recoleccion
         {
+            Jugador? jugador = _context.Jugadores.FirstOrDefault(j => j.Nombre == recoleccionDTO.NombreJugador);
+            if(jugador == null)
+            {
+                return BadRequest("El jugador no existe.");
+            }
             Recoleccion recoleccion = new Recoleccion();
-            recoleccion.JugadorId = recoleccionDTO.JugadorId;
+            recoleccion.JugadorId = jugador.Id;
             recoleccion.Recurso = recoleccionDTO.Recurso;
             recoleccion.PartidaId = recoleccionDTO.PartidaId;
 

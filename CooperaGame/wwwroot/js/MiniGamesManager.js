@@ -30,7 +30,7 @@ function DesplegarMinijuego(recurso) {
     const payload = {
         partidaId: parseInt(partidaId, 10),
         recurso: recurso,
-        jugadorId: 2
+        nombreJugador: getUsuario()
     };
 
     //const url = `/Recoleccions/Crear?recurso=${encodeURIComponent(recurso) }&jugadorId=2&partidaId=25`;
