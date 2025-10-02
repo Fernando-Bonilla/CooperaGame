@@ -209,7 +209,28 @@
 
     <!-- JavaScript personalizado -->
     <script>
+        const btnwood = document.getElementById('btnWood');
+        const btnstone = document.getElementById('btnStone');
+        const btnfood = document.getElementById('btnFood');
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Chequeamos estado de Usuario
+
+            if (getUsuario() == null){
+                btnwood.classList.remove('d-none');
+                btnstone.classList.remove('d-none');
+                btnfood.classList.remove('d-none');
+
+                onClickChangeName();
+            }
+            else{
+                btnfood.classList.add('d-none');
+                btnwood.classList.add('d-none');
+				btnstone.classList.add('d-none');
+            }
+
+            
+
           // Referencias a elementos
           const changeNameBtn = document.getElementById('changeNameBtn');
           const changeNameModal = new bootstrap.Modal(document.getElementById('changeNameModal'));
@@ -218,7 +239,9 @@
           const playerNameDisplay = document.getElementById('playerNameDisplay');
 
           // Abrir modal al hacer clic en "Cambiar nombre"
-          changeNameBtn.addEventListener('click', function() {
+          changeNameBtn.addEventListener('click', onClickChangeName());
+
+          function onClickChangeName() {
             // Limpiar campo de entrada
             newPlayerNameInput.value = '';
             // Mostrar el modal
@@ -227,7 +250,7 @@
             setTimeout(() => {
               newPlayerNameInput.focus();
             }, 500);
-          });
+          }
 
           // Manejar envío con botón "Aceptar"
           acceptNameChangeBtn.addEventListener('click', function() {
@@ -254,6 +277,8 @@
 
             // Actualizar nombre mostrado
             playerNameDisplay.innerHTML = `Jugador: <em>${newName}</em>`;
+                                        ////////////////////////////////////////
+            guardarUsuario(newName);   //guardamos el Nombre en el localStrage
 
             // Limpiar estado de error
             newPlayerNameInput.classList.remove('is-invalid');
