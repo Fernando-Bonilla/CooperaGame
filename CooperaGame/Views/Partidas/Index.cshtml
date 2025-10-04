@@ -1,4 +1,5 @@
-﻿@model CooperaGame.Models.Partida
+﻿@* @model CooperaGame.Models.Partida *@
+@model CooperaGame.Views.Partidas.PartidaViewModel;
 
 <!doctype html>
 <html lang="es">
@@ -73,10 +74,10 @@
         </div>
         <div>
             <div>
-                <h4>Partida Id: <span id="partidaId">@Model.Id</span> </h4>
+                <h4>Partida Id: <span id="partidaId">@Model.Partida.Id</span> </h4>
             </div>
             <div>
-                <h4>Partida Estado: <span id="partidaEstado">@Model.Estado</span> </h4>
+                <h4>Partida Estado: <span id="partidaEstado">@Model.Partida.Estado</span> </h4>
             </div>
         </div>
         
@@ -104,7 +105,7 @@
 
                         <div class="resource-counter mb-3">
                             <div class="resource-current" id="woodCurrent">@ViewBag.CantMadera</div>
-                            <div class="resource-total">de <span id="woodTotal">@Model.CantMadera</span></div>
+                            <div class="resource-total">de <span id="woodTotal">@Model.Partida.CantMadera</span></div>
                         </div>
 
                         <p class="card-text muted small-note mb-4">Suma 1 por click.</p>
@@ -124,7 +125,7 @@
 
                         <div class="resource-counter mb-3">
                             <div class="resource-current" id="stoneCurrent">@ViewBag.CantPiedra</div>
-                            <div class="resource-total">de <span id="stoneTotal">@Model.CantPiedra</span></div>
+                            <div class="resource-total">de <span id="stoneTotal">@Model.Partida.CantPiedra</span></div>
                         </div>
 
                         <p class="card-text muted small-note mb-4">Suma 1 por click.</p>
@@ -144,7 +145,7 @@
 
                         <div class="resource-counter mb-3">
                             <div class="resource-current" id="foodCurrent">@ViewBag.CantComida</div>
-                            <div class="resource-total">de <span id="foodTotal">@Model.CantComida</span></div>
+                            <div class="resource-total">de <span id="foodTotal">@Model.Partida.CantComida</span></div>
                         </div>
 
                         <p class="card-text muted small-note mb-4">Suma 1 por click.</p>
@@ -173,7 +174,7 @@
                         method="post"
                         asp-controller="Jugadores"
                         asp-action="Crear"
-                        asp-route-idPartida="@Model.Id">
+                        asp-route-idPartida="@Model.Partida.Id">
                         @Html.AntiForgeryToken()
                         <div class="mb-3">
                             <label for="newPlayerName" class="form-label text-white">Ingresa tu nombre:</label>
@@ -232,19 +233,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><strong>MatiasV</strong></td>
-                                    <td>7</td>
-                                    <td>5</td>
-                                    <td>3</td>
-                                    <td><strong>15</strong></td>
-                                </tr>                                
+                                @foreach (CooperaGame.Services.EstadisticasService.EstadisticaJugador estadisticaJugador in Model.Estadisticas)
+                                {
+                                    <tr>
+                                        <td><strong>@estadisticaJugador.Nombre</strong></td>
+                                        <td>@estadisticaJugador.CantMaderaRecolectada</td>
+                                        <td>@estadisticaJugador.CantPiedraRecolectada</td>
+                                        <td>@estadisticaJugador.CantComidaRecolectada</td>
+                                        <td><strong>@estadisticaJugador.TotalRecursosRecolectados</strong></td>
+                                    </tr>                                    
+                                } 
                                 <tr class="table-warning">
                                     <td><strong>TOTALES</strong></td>
-                                    <td><strong>@Model.CantMadera</strong></td>
-                                    <td><strong>@Model.CantPiedra</strong></td>
-                                    <td><strong>@Model.CantComida</strong></td>
-                                    <td><strong>@(Model.CantMadera + Model.CantPiedra + Model.CantComida)</strong></td>
+                                    <td><strong>@Model.Partida.CantMadera</strong></td>
+                                    <td><strong>@Model.Partida.CantPiedra</strong></td>
+                                    <td><strong>@Model.Partida.CantComida</strong></td>
+                                    <td><strong>@(Model.Partida.CantMadera + Model.Partida.CantPiedra + Model.Partida.CantComida)</strong></td>
                                 </tr>
                             </tbody>
                         </table>

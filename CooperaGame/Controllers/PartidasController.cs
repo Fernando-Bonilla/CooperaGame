@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CooperaGame.Data;
 using CooperaGame.Models;
+using CooperaGame.Views.Partidas;
+using CooperaGame.Services;
 
 namespace CooperaGame.Controllers
 {
     public class PartidasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly EstadisticasService _stadisticasService;
 
-        public PartidasController(ApplicationDbContext context)
+        public PartidasController(ApplicationDbContext context, EstadisticasService service)
         {
             _context = context;
+            _stadisticasService = service;
         }
 
         // GET: Partidas
@@ -52,7 +56,12 @@ namespace CooperaGame.Controllers
             ViewBag.CantMadera = cantidadMadera;
             ViewBag.CantComida = cantidadComida;
 
-            return View(partida);
+            PartidaViewModel viewModel = new PartidaViewModel();
+            viewModel.Partida = partida;
+            viewModel.Estadisticas = await _stadisticasService.obtenerEstadisticasDeLaPartida(id);
+
+            return View(viewModel);
+            //return View(partida);
         }
 
         // POST: Partidas/Crear

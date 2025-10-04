@@ -46,6 +46,8 @@ namespace CooperaGame.Services
                    recol.JugadorId == id &&
                    recol.Recurso == "food");
 
+                estadisticaJugador.TotalRecursosRecolectados = estadisticaJugador.CantMaderaRecolectada + estadisticaJugador.CantComidaRecolectada + estadisticaJugador.CantPiedraRecolectada;
+
                 jugadoresEstadisticas.Add(estadisticaJugador);
             }
 
@@ -53,12 +55,18 @@ namespace CooperaGame.Services
             
         }
 
+        /*public Task<TimeOnly> obtenerDuracionPartida(int partidaId)
+        {
+
+        }*/
+
         public class EstadisticaJugador()
         {
             public string Nombre {  get; set; } = string.Empty;
             public int CantMaderaRecolectada { get; set; } = 0;
             public int CantPiedraRecolectada { get; set; } = 0;
             public int CantComidaRecolectada { get; set; } = 0;
+            public int TotalRecursosRecolectados { get; set; } = 0;
 
         }
     }

@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<PartidaService>(); // services donde estan los metodos que calculan cosas de la partida
+builder.Services.AddScoped<EstadisticasService>(); // service donde se calcula de muy mala manera las estadistica de c/jugador en la partida
 
 var app = builder.Build();
 
