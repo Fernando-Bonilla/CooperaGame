@@ -25,39 +25,19 @@ namespace CooperaGame.Controllers
         }
 
         // GET: Recoleccions
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Recolecciones.Include(r => r.Jugador).Include(r => r.Partida);
             return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Recoleccions/Details/5
-       /* public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recoleccion = await _context.Recolecciones
-                .Include(r => r.Jugador)
-                .Include(r => r.Partida)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (recoleccion == null)
-            {
-                return NotFound();
-            }
-
-            return View(recoleccion);
         }*/
-
+       
         // GET: Recoleccions/Create
-        public IActionResult Crear()
+        /*public IActionResult Crear()
         {
             ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre");
             ViewData["PartidaId"] = new SelectList(_context.Partidas, "Id", "Id");
             return View();
-        }
+        }*/
         
         [HttpPost]        
         public async Task<IActionResult> Crear([FromBody] RecoleccionDTO recoleccionDTO) 
@@ -83,103 +63,14 @@ namespace CooperaGame.Controllers
                 await _partidaService.setearEstadoPartidaFinalizadaCuandoTodasLasMetasSeCumplen(recoleccionDTO.PartidaId); 
             }           
            
+            // se reedirige al action "Index" en PartidasController
             string? url = Url.Action("Index", "Partidas", new { id = recoleccionDTO.PartidaId });
             return Ok(new { redirectUrl = url });
         }
-
-        // GET: Recoleccions/Edit/5
-        /*public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recoleccion = await _context.Recolecciones.FindAsync(id);
-            if (recoleccion == null)
-            {
-                return NotFound();
-            }
-            ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre", recoleccion.JugadorId);
-            ViewData["PartidaId"] = new SelectList(_context.Partidas, "Id", "Id", recoleccion.PartidaId);
-            return View(recoleccion);
-        }*/
-
-        // POST: Recoleccions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Recurso,Fecha,JugadorId,PartidaId")] Recoleccion recoleccion)
-        {
-            if (id != recoleccion.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(recoleccion);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RecoleccionExists(recoleccion.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre", recoleccion.JugadorId);
-            ViewData["PartidaId"] = new SelectList(_context.Partidas, "Id", "Id", recoleccion.PartidaId);
-            return View(recoleccion);
-        }*/
-
-        // GET: Recoleccions/Delete/5
-       /* public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recoleccion = await _context.Recolecciones
-                .Include(r => r.Jugador)
-                .Include(r => r.Partida)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (recoleccion == null)
-            {
-                return NotFound();
-            }
-
-            return View(recoleccion);
-        }*/
-
-        // POST: Recoleccions/Delete/5
-        /*[HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var recoleccion = await _context.Recolecciones.FindAsync(id);
-            if (recoleccion != null)
-            {
-                _context.Recolecciones.Remove(recoleccion);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-*/
-        private bool RecoleccionExists(int id)
+        
+        /*private bool RecoleccionExists(int id)
         {
             return _context.Recolecciones.Any(e => e.Id == id);
-        }
+        }*/
     }
 }
