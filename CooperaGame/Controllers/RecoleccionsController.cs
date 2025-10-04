@@ -9,16 +9,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CooperaGame.Services;
 
 namespace CooperaGame.Controllers
 {
     public class RecoleccionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly PartidaService _partidaService;
 
-        public RecoleccionsController(ApplicationDbContext context)
+        public RecoleccionsController(ApplicationDbContext context, PartidaService partidaService)
         {
             _context = context;
+            _partidaService = partidaService;
         }
 
         // GET: Recoleccions
@@ -59,8 +62,7 @@ namespace CooperaGame.Controllers
         // POST: Recoleccions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        /*[ValidateAntiForgeryToken]*/
+        [HttpPost]        
         public async Task<IActionResult> Crear([FromBody] RecoleccionDTO recoleccionDTO) //Fecha [Bind("Recurso,JugadorId,PartidaId")] Recoleccion recoleccion
         {
             Jugador? jugador = _context.Jugadores.FirstOrDefault(j => j.Nombre == recoleccionDTO.NombreJugador);
@@ -68,21 +70,24 @@ namespace CooperaGame.Controllers
             {
                 return BadRequest("El jugador no existe.");
             }
-            Recoleccion recoleccion = new Recoleccion();
-            recoleccion.JugadorId = jugador.Id;
-            recoleccion.Recurso = recoleccionDTO.Recurso;
-            recoleccion.PartidaId = recoleccionDTO.PartidaId;
 
+            if(await _partidaService.metaRecursoAlcanzada(recoleccionDTO.PartidaId, recoleccionDTO.Recurso) == false)
+            {
+                Recoleccion recoleccion = new Recoleccion();
+                recoleccion.JugadorId = jugador.Id;
+                recoleccion.Recurso = recoleccionDTO.Recurso;
+                recoleccion.PartidaId = recoleccionDTO.PartidaId;
+
+                _context.Add(recoleccion);
+                await _context.SaveChangesAsync();
+            }           
            
-            _context.Add(recoleccion);
-            await _context.SaveChangesAsync();
-
             string? url = Url.Action("Index", "Partidas", new { id = recoleccionDTO.PartidaId });
             return Ok(new { redirectUrl = url });
         }
 
         // GET: Recoleccions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        /*public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -97,12 +102,12 @@ namespace CooperaGame.Controllers
             ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre", recoleccion.JugadorId);
             ViewData["PartidaId"] = new SelectList(_context.Partidas, "Id", "Id", recoleccion.PartidaId);
             return View(recoleccion);
-        }
+        }*/
 
         // POST: Recoleccions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Recurso,Fecha,JugadorId,PartidaId")] Recoleccion recoleccion)
         {
@@ -134,10 +139,10 @@ namespace CooperaGame.Controllers
             ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre", recoleccion.JugadorId);
             ViewData["PartidaId"] = new SelectList(_context.Partidas, "Id", "Id", recoleccion.PartidaId);
             return View(recoleccion);
-        }
+        }*/
 
         // GET: Recoleccions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+       /* public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -154,10 +159,10 @@ namespace CooperaGame.Controllers
             }
 
             return View(recoleccion);
-        }
+        }*/
 
         // POST: Recoleccions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        /*[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -170,7 +175,7 @@ namespace CooperaGame.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+*/
         private bool RecoleccionExists(int id)
         {
             return _context.Recolecciones.Any(e => e.Id == id);

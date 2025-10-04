@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CooperaGame.Data;
+using CooperaGame.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<PartidaService>(); // services donde estan los metodos que calculan cosas de la partida
 
 var app = builder.Build();
 

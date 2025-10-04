@@ -1,6 +1,7 @@
 ﻿using CooperaGame.Data;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using CooperaGame.Models;
 
 namespace CooperaGame.Services
 {
@@ -22,19 +23,73 @@ namespace CooperaGame.Services
                 .CountAsync();
 
             return cantidad;
-        }
-
-        /*public async int metaRecurso(int idPartida, string recurso)
-        {
-
-        }*/
+        }        
 
         // uno que chequee la cantidad y lo compare con la meta
-        public bool metaRecursoAlcanzada(int idPartida, string recurso)
+        public async Task<bool> metaRecursoAlcanzada(int idPartida, string recurso)
         {
-            
+            if(recurso == "wood")
+            {
+                return await maderaMetaAlcanzada(idPartida, recurso);
+            }
+            else if(recurso == "food")
+            {
+                return await comidaMetaAlcanzada(idPartida, recurso);
+            }
+            else
+            {
+                return await piedraMetaAlcanzada(idPartida, recurso);
+            }
+
+            //return false;
+        }
+
+        public async Task<bool> maderaMetaAlcanzada(int idPartida, string recurso)
+        {
+            Partida? partida = await _context.Partidas
+                .FirstOrDefaultAsync(p => p.Id == idPartida);
+
+            int cantidadRecoletado = await cantidadRecursoRecoletado(idPartida, recurso);
+
+            if (partida.CantMadera == cantidadRecoletado)
+            {
+                return true;
+            }
+
             return false;
         }
+
+        public async Task<bool> comidaMetaAlcanzada(int idPartida, string recurso)
+        {
+            Partida? partida = await _context.Partidas
+                .FirstOrDefaultAsync(p => p.Id == idPartida);
+
+            int cantidadRecoletado = await cantidadRecursoRecoletado(idPartida, recurso);
+
+            if (partida.CantComida == cantidadRecoletado)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> piedraMetaAlcanzada(int idPartida, string recurso)
+        {
+            Partida? partida = await _context.Partidas
+                .FirstOrDefaultAsync(p => p.Id == idPartida);
+
+            int cantidadRecoletado = await cantidadRecursoRecoletado(idPartida, recurso);
+
+            if (partida.CantPiedra == cantidadRecoletado)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public 
 
     }
 }
