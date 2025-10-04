@@ -25,71 +25,41 @@ namespace CooperaGame.Services
             return cantidad;
         }        
 
-        // uno que chequee la cantidad y lo compare con la meta
+       // uno que segun el recurso llame al que corresponda
         public async Task<bool> metaRecursoAlcanzada(int idPartida, string recurso)
         {
-            if(recurso == "wood")
+            Partida? partida = await _context.Partidas
+                .FirstOrDefaultAsync(p => p.Id == idPartida);
+
+            if (recurso == "wood")
             {
-                return await maderaMetaAlcanzada(idPartida, recurso);
+                return partida.CantMadera == await cantidadRecursoRecoletado(idPartida, recurso); 
             }
             else if(recurso == "food")
             {
-                return await comidaMetaAlcanzada(idPartida, recurso);
+                return partida.CantComida == await cantidadRecursoRecoletado(idPartida, recurso);
             }
             else
             {
-                return await piedraMetaAlcanzada(idPartida, recurso);
+                return partida.CantPiedra == await cantidadRecursoRecoletado(idPartida, recurso);
             }
+           
+        }       
 
-            //return false;
-        }
-
-        public async Task<bool> maderaMetaAlcanzada(int idPartida, string recurso)
+        public async Task setearEstadoPartidaFinalizadaCuandoTodasLasMetasSeCumplen(int idPartida)
         {
             Partida? partida = await _context.Partidas
                 .FirstOrDefaultAsync(p => p.Id == idPartida);
 
-            int cantidadRecoletado = await cantidadRecursoRecoletado(idPartida, recurso);
-
-            if (partida.CantMadera == cantidadRecoletado)
+            if(partida.CantMadera == await cantidadRecursoRecoletado(idPartida, "wood") &&
+                partida.CantComida == await cantidadRecursoRecoletado(idPartida, "food") &&
+                partida.CantPiedra == await cantidadRecursoRecoletado(idPartida, "stone"))
             {
-                return true;
+                partida.Estado = "finalizada";
+                _context.Update(partida);
+                await _context.SaveChangesAsync();
             }
-
-            return false;
         }
-
-        public async Task<bool> comidaMetaAlcanzada(int idPartida, string recurso)
-        {
-            Partida? partida = await _context.Partidas
-                .FirstOrDefaultAsync(p => p.Id == idPartida);
-
-            int cantidadRecoletado = await cantidadRecursoRecoletado(idPartida, recurso);
-
-            if (partida.CantComida == cantidadRecoletado)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task<bool> piedraMetaAlcanzada(int idPartida, string recurso)
-        {
-            Partida? partida = await _context.Partidas
-                .FirstOrDefaultAsync(p => p.Id == idPartida);
-
-            int cantidadRecoletado = await cantidadRecursoRecoletado(idPartida, recurso);
-
-            if (partida.CantPiedra == cantidadRecoletado)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public 
 
     }
 }

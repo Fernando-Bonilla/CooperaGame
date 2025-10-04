@@ -32,7 +32,7 @@ namespace CooperaGame.Controllers
         }
 
         // GET: Recoleccions/Details/5
-        public async Task<IActionResult> Details(int? id)
+       /* public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -49,7 +49,7 @@ namespace CooperaGame.Controllers
             }
 
             return View(recoleccion);
-        }
+        }*/
 
         // GET: Recoleccions/Create
         public IActionResult Crear()
@@ -58,12 +58,9 @@ namespace CooperaGame.Controllers
             ViewData["PartidaId"] = new SelectList(_context.Partidas, "Id", "Id");
             return View();
         }
-
-        // POST: Recoleccions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]        
-        public async Task<IActionResult> Crear([FromBody] RecoleccionDTO recoleccionDTO) //Fecha [Bind("Recurso,JugadorId,PartidaId")] Recoleccion recoleccion
+        public async Task<IActionResult> Crear([FromBody] RecoleccionDTO recoleccionDTO) 
         {
             Jugador? jugador = _context.Jugadores.FirstOrDefault(j => j.Nombre == recoleccionDTO.NombreJugador);
             if(jugador == null)
@@ -71,6 +68,7 @@ namespace CooperaGame.Controllers
                 return BadRequest("El jugador no existe.");
             }
 
+            // si no se alcanzó la meta del recurso guarda la recoleccion
             if(await _partidaService.metaRecursoAlcanzada(recoleccionDTO.PartidaId, recoleccionDTO.Recurso) == false)
             {
                 Recoleccion recoleccion = new Recoleccion();
@@ -80,6 +78,9 @@ namespace CooperaGame.Controllers
 
                 _context.Add(recoleccion);
                 await _context.SaveChangesAsync();
+
+                // cada vez que se guarda un registro recoleccion chequeamos si se cumplieron todas las metas, si true, partida.Estado pasa a ser "finalizada"
+                await _partidaService.setearEstadoPartidaFinalizadaCuandoTodasLasMetasSeCumplen(recoleccionDTO.PartidaId); 
             }           
            
             string? url = Url.Action("Index", "Partidas", new { id = recoleccionDTO.PartidaId });
