@@ -8,7 +8,7 @@ namespace CooperaGame.Views.Partidas
     {
         public Partida? Partida {  get; set; }
 
-        public TimeOnly DuracionPartida { get; set; } = new TimeOnly();
+        public TimeSpan DuracionPartida { get; set; } = new TimeSpan();
 
         public List<EstadisticaJugador>? Estadisticas { get; set; }
     }

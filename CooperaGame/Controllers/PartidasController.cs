@@ -55,10 +55,11 @@ namespace CooperaGame.Controllers
             ViewBag.CantPiedra = cantidadPiedra;
             ViewBag.CantMadera = cantidadMadera;
             ViewBag.CantComida = cantidadComida;
-
+            
             PartidaViewModel viewModel = new PartidaViewModel();
             viewModel.Partida = partida;
             viewModel.Estadisticas = await _stadisticasService.obtenerEstadisticasDeLaPartida(id);
+            viewModel.DuracionPartida = await _stadisticasService.obtenerDuracionPartida(id);
 
             return View(viewModel);
             //return View(partida);

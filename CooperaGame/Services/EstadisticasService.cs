@@ -55,11 +55,32 @@ namespace CooperaGame.Services
             
         }
 
-        /*public Task<TimeOnly> obtenerDuracionPartida(int partidaId)
+        public async Task<TimeSpan> obtenerDuracionPartida(int partidaId)
         {
+            DateTime? primerRegistro = await _context.Recolecciones
+                .Where(rec => rec.PartidaId == partidaId)
+                .Select(rec => rec.Fecha)
+                .FirstOrDefaultAsync();
 
-        }*/
+            DateTime? ultimoRegistro = await _context.Recolecciones
+                .Where(rec => rec.PartidaId == partidaId)
+                .OrderByDescending(rec => rec.Fecha)
+                .Select(rec => rec.Fecha)
+                .FirstOrDefaultAsync();
 
+            TimeSpan duracionPartida = TimeSpan.Zero;
+            if (ultimoRegistro == null || primerRegistro == null)
+            {
+                return duracionPartida;
+            }
+            else
+            {
+                return duracionPartida = (TimeSpan)(ultimoRegistro - primerRegistro);
+            }             
+
+        }
+
+        // clase anidada para poder pasar la lista EstadisticaJugador estadisticaJugador = new EstadisticaJugador() con las propiedades que necesitamos mostrar en la view
         public class EstadisticaJugador()
         {
             public string Nombre {  get; set; } = string.Empty;
